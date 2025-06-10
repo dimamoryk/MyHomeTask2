@@ -1,0 +1,9 @@
+### IntelliJ IDEA ###
+   *.iml
+   out/
+   target/
+   build/
+   .idea/
+   .DS_Store
+
+
