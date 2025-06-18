@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AnimalMain {
+    private static String[] args;
+
     public static void main(String... args) {
+        AnimalMain.args = args;
         Scanner scanner = new Scanner(System.in);
         ArrayList<Animal> animals = new ArrayList<>();
 
