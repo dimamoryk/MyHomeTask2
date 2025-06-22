@@ -1,6 +1,7 @@
 import animals.Animal;
 import birds.Duck;
 import data.Command;
+import factory.AnimalFactory;
 import pets.Cat;
 import pets.Dog;
 
@@ -8,83 +9,107 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AnimalMain {
-    private static String[] args;
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final ArrayList<Animal> animals = new ArrayList<>();
+
 
     public static void main(String... args) {
-        AnimalMain.args = args;
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<Animal> animals = new ArrayList<>();
-
         while (true) {
-            System.out.print("\nadd / list / exit : ");
-            String input = scanner.nextLine().trim().toLowerCase(); // Регистронезависимый ввод команд
+            printMenu(); // выводим меню
 
             try {
-                Command command = Command.valueOf(input.toUpperCase());
+                Command command = Command.valueOf(scanner.nextLine().toUpperCase());
 
                 switch (command) {
                     case ADD:
-                        handleAdd(animals, scanner);
+                        addAnimal(); // добавляем животное
                         break;
-
                     case LIST:
-                        printAnimals(animals);
+                        listAnimals(); // показываем список всех животных
                         break;
-
                     case EXIT:
-                        System.out.println("Выход из программы.");
-                        return;
+                        System.exit(0); // завершение программы
+                        break;
+                    default:
+                        System.out.println("Неверная команда!");
                 }
             } catch (IllegalArgumentException e) {
-                System.out.println("Неправильно введена команда!");
+                System.out.println("Ошибка ввода команды.");
+
             }
         }
     }
 
-    // Обработка добавления нового животного
-    private static void handleAdd(ArrayList<Animal> animals, Scanner scanner) {
-        System.out.print("Введите вид животного (cat/dog/duck): ");
-        String type = scanner.nextLine().trim().toLowerCase();
+    private static void printMenu() {
+        System.out.println("\nМеню:");
+        System.out.println("ADD — добавить животное");
+        System.out.println("LIST — показать список животных");
+        System.out.println("EXIT — выйти из программы");
+        System.out.print("Введите команду: ");
 
-        System.out.print("Имя: ");
-        String name = scanner.nextLine().trim();
+    }
 
-        System.out.print("Возраст: ");
-        int age = Integer.parseInt(scanner.nextLine().trim());
 
-        System.out.print("Вес: ");
-        double weight = Double.parseDouble(scanner.nextLine().trim());
+    // Добавляем новое животное
+    private static void addAnimal() {
+        String inputType;
+        do {
+            System.out.print("Введите вид животного (cat/dog/duck): ");
+            inputType = scanner.nextLine();
+        } while (!inputType.equalsIgnoreCase("cat") && !inputType.equalsIgnoreCase("dog") && !inputType.equalsIgnoreCase("duck"));
 
-        System.out.print("Цвет: ");
-        String color = scanner.nextLine().trim();
+//  используем inputType для создания животного
 
-        Animal animal;
-        switch (type) {
-            case "cat":
-                animal = new Cat(name, age, weight, color);
-                break;
-            case "dog":
-                animal = new Dog(name, age, weight, color);
-                break;
-            case "duck":
-                animal = new Duck(name, age, weight, color);
-                break;
-            default:
-                throw new IllegalStateException("Ожидалось cat, dog или duck");
+
+        System.out.print("Имя животного: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Возраст животного: ");
+        int age = Integer.parseInt(scanner.nextLine());
+
+        while (true) {
+            try {
+                age = Integer.parseInt(scanner.nextLine());
+                if (age >= 0) break;
+                else System.out.println("Возраст не может быть отрицательным!");
+            } catch (NumberFormatException e) {
+                System.out.println("Некорректный формат возраста.");
+            }
         }
 
-        animals.add(animal);
+
+        System.out.print("Вес животного: ");
+        double weight = Double.parseDouble(scanner.nextLine());
+        while (true) {
+            try {
+                weight = Double.parseDouble(scanner.nextLine());
+                if (weight >= 0) break;
+                else System.out.println("Вес не может быть отрицательным!");
+            } catch (NumberFormatException e) {
+                System.out.println("Некорректный формат веса.");
+            }
+        }
+
+        System.out.print("Цвет животного: ");
+        String color = scanner.nextLine();
+
+        // Выбираем вид животного
+        System.out.println("Выберите тип животного:\n1. Кошка\n2. Собака\n3. Утка");
+        int choice = Integer.parseInt(scanner.nextLine());
+
+
+        Animal animal = new AnimalFactory(name, age, weight, color).createAnimal(inputType);
+
+        animals.add(animal);// добавляем объект в коллекцию
         animal.say();
+        System.out.println("Животное успешно добавлено!");
     }
 
-    // Печать списка животных
-    private static void printAnimals(ArrayList<Animal> animals) {
-        if (animals.isEmpty()) {
-            System.out.println("Нет животных.");
-        } else {
-            for (Animal animal : animals) {
-                System.out.println(animal.toString());
-            }
+
+    // Показываем список всех животных
+    private static void listAnimals() {
+        for (Animal a : animals) {
+            System.out.println(a.toString());
         }
     }
 }

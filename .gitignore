@@ -1,9 +1,12 @@
 ### IntelliJ IDEA ###
-   *.iml
-   out/
-   target/
-   build/
-   .idea/
-   .DS_Store
+  # Игнорируем IDE специфичные файлы
+  .idea/
+  *.iml
 
+  # Лог-файлы и временные файлы
+  logs/*
+  tmp/*
 
+  # Файлы сборки и зависимостей
+  target/
+  build/
