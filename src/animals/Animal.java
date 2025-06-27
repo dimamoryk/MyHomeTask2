@@ -1,12 +1,12 @@
 package animals;
 
-public class Animal {
+public abstract class Animal {
     private String name;
     private int age;
     private double weight;
     private String color;
 
-    public Animal(String name, int age, double weight, String color) {
+    public Animal(String name, int age, int weight, String color) {
         this.name = name;
         this.age = age;
         this.weight = weight;
@@ -35,7 +35,7 @@ public class Animal {
     }
 
     public void setWeight(double weight) {
-        this.weight = weight;
+        this.weight = (int) weight;
     }
 
     public String getColor() {
