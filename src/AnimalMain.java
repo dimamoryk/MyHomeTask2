@@ -1,9 +1,6 @@
 import animals.Animal;
-import birds.Duck;
 import data.Command;
 import factory.AnimalFactory;
-import pets.Cat;
-import pets.Dog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,9 +10,7 @@ public class AnimalMain {
     private static final Scanner scanner = new Scanner(System.in);
     private static final ArrayList<Animal> animals = new ArrayList<>();
 
-
     public static void main(String... args) {
-        Scanner scanner = new Scanner(System.in);
         while (true) {
             printMenu(); // выводим меню
 
@@ -32,22 +27,28 @@ public class AnimalMain {
                     case EXIT:
                         System.out.println("Программа завершена");
                         System.exit(0); // Завершаем программу
-
                     default:
                         System.out.println("Неверная команда!");
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Ошибка ввода команды.");
-
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
+    // Метод вывода меню команд
+    private static void printMenu() {
+        System.out.println("\nМеню:");
+        System.out.println("ADD - добавить животное");
+        System.out.println("LIST - показать список животных");
+        System.out.println("EXIT - завершить программу");
+        System.out.print("Введите команду: ");
+    }
+
     // Добавляем новое животное
     private static void addAnimal() throws Exception {
-
         System.out.print("Тип животного (cat/dog/duck): ");
         String type = scanner.nextLine();
 
@@ -56,12 +57,10 @@ public class AnimalMain {
             return;
         }
 
-
         System.out.print("Имя животного: ");
         String name = scanner.nextLine();
 
-
-        //Обработка ошибок возраста
+        // Обработка ошибок возраста
         System.out.print("Возраст животного: ");
         String inputAge = scanner.nextLine();
         boolean validInput = false;
@@ -72,27 +71,24 @@ public class AnimalMain {
                 if (age >= 0) {
                     validInput = true;
                 } else {
-                    System.out.println("Возраст не может быть отрицательным! Пожалуйста, введите Возраст снова.");
+                    System.out.println("Возраст не может быть отрицательным! Пожалуйста, введите возраст снова.");
                     inputAge = scanner.nextLine();
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Вы ввели неверный формат Возраста. Введите число:");
+                System.out.println("Вы ввели неверный формат возраста. Введите число:");
                 inputAge = scanner.nextLine();
             }
         }
-        System.out.println("Корректный Возраст принят.");
+        System.out.println("Корректный возраст принят.");
 
-
-        //Обработка ошибок веса
+        // Обработка ошибок веса
         System.out.print("Вес животного: ");
         String inputWeight = scanner.nextLine();
-
         validInput = false;
         double weight = 0;
         while (!validInput) {
             try {
                 weight = Double.parseDouble(inputWeight);
-
                 if (weight >= 0) {
                     validInput = true;
                 } else {
@@ -104,11 +100,9 @@ public class AnimalMain {
                 inputWeight = scanner.nextLine();
             }
         }
-
         System.out.println("Корректный вес принят.");
 
-
-        //Обработка ошибок цвета
+        // Обработка выбора цвета
         System.out.print("Цвет животного: ");
         String color = scanner.nextLine();
 
@@ -123,47 +117,39 @@ public class AnimalMain {
                 System.out.printf("%d. %s\n", i + 1, colors[i]);
             }
 
+            // Получаем выбор пользователя
+            String choice = scanner.nextLine();
             try {
-                int choice = Integer.parseInt(scanner.nextLine());
-
-                if (choice >= 1 && choice <= colors.length) {
-                    // Если выбран правильный индекс, выводим строку с цветом
-                    System.out.println("Цвет животного: " + colors[choice - 1]);
-                    break; // Выходим из цикла после успешного выбора
+                int index = Integer.parseInt(choice) - 1;
+                if (index >= 0 && index < colors.length) {
+                    color = colors[index];
+                    break; // Выходим из цикла, если выбран правильный вариант
                 } else {
-                    throw new NumberFormatException();
+                    System.out.println("Выбран неверный номер цвета. Попробуйте ещё раз.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Ошибка! Выберите номер из предложенных.");
-
+                System.out.println("Вы ввели некорректный символ. Введите цифру от 1 до " + colors.length + ".");
             }
         }
-        System.out.println("Корректный цвет принят.");
 
-                //Фабрика
-        Animal animal = new AnimalFactory(type, name, age, weight, color).createAnimal();
-
-        animals.add(animal); // добавляем объект в коллекцию
-        System.out.println("Животное успешно добавлено!");
+        // Создаем объект животного используя фабрику
+        Animal animal = AnimalFactory.createAnimal(name, age, weight, color, type);
+        animals.add(animal);
+        System.out.println("Животное успешно добавлено.");
     }
 
-    //Список всех животных
+    // Показываем список всех животных
     private static void listAnimals() {
-        for (Animal a : animals) {
-            System.out.println(a.toString()); //  toString для вывода полной информации
+        if (animals.isEmpty()) {
+            System.out.println("Список пуст.");
+        } else {
+            System.out.println("Список животных:");
+            for (Animal animal : animals) {
+                System.out.println(animal.toString());
+            }
         }
     }
-
-    // Меню выбора команд
-    private static void printMenu() {
-        System.out.println("\nМеню:");
-        System.out.println("ADD — добавить животное");
-        System.out.println("LIST — показать список животных");
-        System.out.println("EXIT — выйти из программы");
-        System.out.print("Введите команду: ");
-    }
 }
-
 
 
 

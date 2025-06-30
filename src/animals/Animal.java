@@ -5,14 +5,21 @@ public abstract class Animal {
     private int age;
     private double weight;
     private String color;
+    private String type;
 
-    public Animal(String name, int age, int weight, String color) {
+    public Animal( String name, int age, double weight, String color, String type) {
+        this.type = type;
         this.name = name;
         this.age = age;
         this.weight = weight;
         this.color = color;
     }
 
+    public String setType(String type){
+            this.type = type;
+
+            return type;
+        }
 
     public String getName() {
         return name;
@@ -64,19 +71,20 @@ public abstract class Animal {
 
     @Override
     public String toString() {
-        return "Привет! Меня зовут " + this.name +
-                ", мне " + formatAge(this.age) +
-                ", я вешу - " + this.weight + " кг," +
-                " мой цвет - " + this.color;
+        String yearsForm = getYearsForm(age);
+        return "Привет! Меня зовут " + name +
+                ", мне " + age + " " + yearsForm +
+                ", я вешу - " + weight + " кг, мой цвет - " + color;
     }
 
-    private String formatAge(int age) {
-        if (age % 10 == 1 && age != 11) {
-            return age + " год";
-        } else if ((age % 10 >= 2 && age % 10 <= 4) && !(age > 10 && age < 15)) {
-            return age + " года";
-        } else {
-            return age + " лет";
-        }
+
+    // Выбор правильной формы слова "лет"
+    private static String getYearsForm(int number) {
+        if (number % 10 == 1 && number != 11) return "год";
+        else if ((number % 10 >= 2 && number % 10 <= 4) &&
+                !(number > 10 && number < 15)) return "года";
+        else return "лет";
     }
 }
+
+

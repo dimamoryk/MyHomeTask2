@@ -3,8 +3,8 @@ package pets;
 import animals.Animal;
 
 public class Dog extends Animal {
-    public Dog(String name, int age, double weight, String color) {
-        super(name, age, (int) weight, color);
+    public Dog( String name, int age, double weight, String color, String type) {
+        super(name, age, weight, color, type);
 
     }
 
