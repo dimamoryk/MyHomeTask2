@@ -107,7 +107,7 @@ public class AnimalMain {
         String color = scanner.nextLine();
 
         // Список допустимых цветов
-        String[] colors = {"красный", "зеленый", "синий", "желтый"};
+        String[] colors = {"чёрный", "белый", "серый"};
 
         while (true) {  // Бесконечный цикл для повторения попытки ввода
             System.out.println("Выберите цвет животного:");
