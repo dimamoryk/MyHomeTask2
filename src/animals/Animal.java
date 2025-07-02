@@ -1,11 +1,11 @@
 package animals;
 
 public abstract class Animal {
-    private String name;
-    private int age;
+    protected String name;
+    protected int age;
     private double weight;
     private String color;
-    private String type;
+    protected String type;
 
     public Animal( String name, int age, double weight, String color, String type) {
         this.type = type;
@@ -14,14 +14,16 @@ public abstract class Animal {
         this.weight = weight;
         this.color = color;
     }
+    public String getType() {
+        return type;
+    }
 
-    public String setType(String type){
-            this.type = type;
-
-            return type;
+    public void setType(String type){
+       this.type = type;
         }
 
     public String getName() {
+
         return name;
     }
 
@@ -30,6 +32,7 @@ public abstract class Animal {
     }
 
     public int getAge() {
+
         return age;
     }
 

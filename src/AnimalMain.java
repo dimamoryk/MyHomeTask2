@@ -49,13 +49,20 @@ public class AnimalMain {
 
     // Добавляем новое животное
     private static void addAnimal() throws Exception {
-        System.out.print("Тип животного (cat/dog/duck): ");
-        String type = scanner.nextLine();
+        boolean isValidType = false;
 
-        if (!Arrays.asList("cat", "dog", "duck").contains(type)) {
-            System.out.println("Неправильный тип животного. Выберите один из вариантов: cat, dog, duck.");
-            return;
+        String type = null;
+        while (!isValidType) {
+            System.out.print("Тип животного (cat/dog/duck): ");
+            type = scanner.nextLine();
+
+            if (Arrays.asList("cat", "dog", "duck").contains(type)) {
+                isValidType = true;
+            } else {
+                System.out.println("Неправильный тип животного. Выберите один из вариантов: cat, dog, duck.");
+            }
         }
+
 
         System.out.print("Имя животного: ");
         String name = scanner.nextLine();
@@ -80,6 +87,7 @@ public class AnimalMain {
             }
         }
         System.out.println("Корректный возраст принят.");
+
 
         // Обработка ошибок веса
         System.out.print("Вес животного: ");
